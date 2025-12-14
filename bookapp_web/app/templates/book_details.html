@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div style="display: flex; align-items: flex-start; gap: 20px; padding: 20px; position: relative;">
+    <!-- Book Card -->
+    <div style="width: 300px; height: 400px; background-color: #f5f5f5; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2); transform: translateY(-5px); transition: transform 0.2s; position: relative; z-index: 2; margin-bottom: -50px;">
+        <img src="{{ book.cover_img_loc }}" alt="{{ book.title }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
+    </div>
+
+    <!-- Book Details Container -->
+    <div style="flex: 1; display: flex; flex-direction: column; gap: 20px; padding: 20px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); position: relative; z-index: 1; margin-top: 50px;">
+        <!-- Left Section -->
+        <div style="flex: 1; display: flex; flex-direction: column; gap: 10px;">
+            <!-- Author -->
+            <p style="margin: 0; font-size: 16px; color: #555;">
+                <strong>Author:</strong> {{ book.author }}
+            </p>
+
+            <!-- Translator -->
+            <p style="margin: 0; font-size: 16px; color: #555;">
+                <strong>Translator:</strong> {{ book.translator }}
+            </p>
+
+            <!-- Language -->
+            <p style="margin: 0; font-size: 16px; color: #555;">
+                <strong>Language:</strong> English
+            </p>
+        </div>
+
+        <!-- Right Section -->
+        <div style="flex: 2;">
+            <!-- Title -->
+            <h1 style="margin: 0; font-size: 24px; font-weight: bold;">{{ book.title }}</h1>
+
+            <!-- Description -->
+            <p style="margin: 10px 0; font-size: 16px; color: #555;">
+                <strong>Description:</strong> {{ book.description }}
+            </p>
+
+            <!-- Start Reading Button -->
+            <button onclick="window.location.href='/books/{{ book.id }}'" style="margin-top: 20px; padding: 10px 20px; font-size: 16px; color: #fff; background-color: #007bff; border: none; border-radius: 4px; cursor: pointer; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                Start Reading
+            </button>
+        </div>
+    </div>
+</div>
+{% endblock %}

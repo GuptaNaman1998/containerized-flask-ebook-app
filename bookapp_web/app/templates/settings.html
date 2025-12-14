@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+<style>
+    :root {
+        --theme-color: #ff6b6b; /* Default theme color */
+        --theme-color-light: rgba(255, 107, 107, 0.1); /* Lightened theme color */
+    }
+
+    .container {
+        font-family: Arial, sans-serif;
+        max-width: 600px; /* Fixed width for better layout */
+        margin: auto;
+        padding: 20px;
+        background-color: var(--theme-color-light); /* Use calculated lightened theme color */
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Added shadow for better visibility */
+    }
+
+    h1 {
+        color: var(--theme-color); /* Use root theme color */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #333333;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input, select, textarea {
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        background-color: #ffffff;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: var(--theme-color); /* Use root theme color */
+        outline: none;
+        box-shadow: 0 0 8px rgba(255, 107, 107, 0.5);
+    }
+
+    button {
+        background-color: var(--theme-color); /* Use root theme color */
+        color: white;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        padding: 10px 20px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #e55a5a; /* Slightly darker shade for hover */
+        transform: scale(1.02);
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Dark mode styles */
+    .dark-mode {
+        background-color: #121212;
+        color: #ffffff;
+    }
+
+    .dark-mode input, .dark-mode select, .dark-mode textarea {
+        background-color: #1e1e1e;
+        color: #ffffff;
+        border-color: #333333;
+    }
+
+    .dark-mode button {
+        background-color: #333333;
+        color: #ffffff;
+    }
+</style>
+<div class="container">
+    <h1>Settings</h1>
+    <p>Update your settings here.</p>
+    <form>
+        <div class="form-container">
+            <div>
+                <label for="darkModeToggle">Dark Mode:</label>
+                <input type="checkbox" id="darkModeToggle" name="darkMode">
+            </div>
+            <div>
+                <label for="soundToggle">Music/Sound:</label>
+                <input type="checkbox" id="soundToggle" name="sound">
+            </div>
+            <div>
+                <label for="colorPalette">Dashboard Theme Color:</label>
+                <select id="colorPalette" name="colorPalette">
+                    <option value="#ff6b6b">Default</option>
+                    <option value="#007bff">Blue</option>
+                    <option value="#28a745">Green</option>
+                    <option value="#dc3545">Red</option>
+                    <option value="#6f42c1">Purple</option>
+                </select>
+            </div>
+        </div>
+        <button type="button" id="saveSettings">Save Settings</button>
+    </form>
+</div>
+<script>
+    // Handle dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('change', () => {
+        document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+    });
+
+    // Handle background music playback
+    const soundToggle = document.getElementById('soundToggle');
+    const audio = new Audio('/static/music/music-file.mp3'); // Replace with the actual path to your music file
+    soundToggle.addEventListener('change', () => {
+        if (soundToggle.checked) {
+            audio.loop = true;
+            audio.play();
+        } else {
+            audio.pause();
+        }
+    });
+
+    // Handle theme color change
+    const colorPalette = document.getElementById('colorPalette');
+    colorPalette.addEventListener('change', () => {
+        const themeColor = colorPalette.value;
+        document.documentElement.style.setProperty('--theme-color', themeColor);
+
+        // Calculate and update the lightened theme color
+        const rgbaColor = hexToRgba(themeColor, 0.1);
+        document.documentElement.style.setProperty('--theme-color-light', rgbaColor);
+    });
+
+    // Convert hex color to rgba
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+    }
+
+    // Save settings button functionality
+    const saveSettings = document.getElementById('saveSettings');
+    saveSettings.addEventListener('click', () => {
+        alert('Settings saved successfully!');
+    });
+
+    // Apply dark mode styles and theme color on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        if (darkModeToggle.checked) {
+            document.body.classList.add('dark-mode');
+        }
+
+        // Set initial theme color and lightened color
+        const initialThemeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim();
+        const initialLightColor = hexToRgba(initialThemeColor, 0.1);
+        document.documentElement.style.setProperty('--theme-color-light', initialLightColor);
+    });
+</script>
+{% endblock %}

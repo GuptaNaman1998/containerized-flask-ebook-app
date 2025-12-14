@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookapp-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookapp-db
+  template:
+    metadata:
+      labels:
+        app: bookapp-db
+    spec:
+      containers:
+      - name: bookapp-db
+        image: us-central1-docker.pkg.dev/qwiklabs-gcp-00-89a63ec84c86/bookapp-repo/bookapp_db
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "admin"
+        - name: POSTGRES_PASSWORD
+          value: "secret"
+        - name: POSTGRES_DB
+          value: "bookapp"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookapp-db
+spec:
+  type: ClusterIP
+  selector:
+    app: bookapp-db
+  ports:
+  - protocol: TCP
+    port: 5432
+    targetPort: 5432

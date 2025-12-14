@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  bookapp_db:
+    build:
+      context: ./bookapp_db
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: secret
+      POSTGRES_DB: bookapp
+    ports:
+      - "5432:5432"
+    volumes:
+      - bookapp-db-data:/var/lib/postgresql/data
+    networks:
+      - bookapp-network
+
+  bookapp_web:
+    build:
+      context: ./bookapp_web
+    ports:
+      - "5000:5000"
+    environment:
+      SQLALCHEMY_DATABASE_URI: postgresql://admin:secret@bookapp_db:5432/bookapp
+    depends_on:
+      - bookapp_db
+    networks:
+      - bookapp-network
+    restart: always
+
+  bookapp_pgadmin:
+    build:
+      context: ./bookapp_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8080:80"
+    depends_on:
+      - bookapp_db
+    volumes:
+      - bookapp-pgadmin-data:/var/lib/pgadmin
+    networks:
+      - bookapp-network
+
+volumes:
+  bookapp-db-data:
+  bookapp-pgadmin-data:
+
+networks:
+  bookapp-network:
+    driver: bridge

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookapp-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookapp-web
+  template:
+    metadata:
+      labels:
+        app: bookapp-web
+    spec:
+      containers:
+      - name: bookapp-web
+        image: us-central1-docker.pkg.dev/qwiklabs-gcp-00-89a63ec84c86/bookapp-repo/bookapp_web
+        ports:
+        - containerPort: 5000
+        env:
+        - name: SQLALCHEMY_DATABASE_URI
+          value: "postgresql://admin:secret@bookapp-db:5432/bookapp"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookapp-web
+spec:
+  type: LoadBalancer
+  selector:
+    app: bookapp-web
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 5000

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bookapp-pgadmin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bookapp-pgadmin
+  template:
+    metadata:
+      labels:
+        app: bookapp-pgadmin
+    spec:
+      containers:
+      - name: bookapp-pgadmin
+        image: us-central1-docker.pkg.dev/qwiklabs-gcp-00-89a63ec84c86/bookapp-repo/bookapp_pgadmin
+        ports:
+        - containerPort: 80
+        env:
+        - name: PGADMIN_DEFAULT_EMAIL
+          value: "admin@example.com"
+        - name: PGADMIN_DEFAULT_PASSWORD
+          value: "admin"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookapp-pgadmin
+spec:
+  type: LoadBalancer
+  selector:
+    app: bookapp-pgadmin
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80

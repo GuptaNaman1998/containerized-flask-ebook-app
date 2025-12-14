@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block title %}Documentation{% endblock %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .content {
+        margin-left: 220px;
+        padding: 20px;
+    }
+
+    h1,
+    h2 {
+        color: #007bff;
+    }
+
+    p {
+        color: #6c757d;
+        margin-bottom: 20px;
+    }
+
+    ul {
+        list-style-type: none;
+        padding: 0;
+        margin-bottom: 20px;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    code {
+        background-color: #e9ecef;
+        padding: 2px 4px;
+        border-radius: 4px;
+    }
+
+    .content h2 {
+        margin-top: 40px;
+    }
+</style>
+<div class="content">
+    <h1>Documentation</h1>
+    <p>Welcome to the Praneet Sagar documentation page. Here you will find all the necessary information about the
+        routes, models, forms, and functions used in the Praneet Sagar application.</p>
+    <h2 id="routes">Routes</h2>
+    <ul id="routes-list">
+        <li><strong>Home Page:</strong> <code>/</code> - Renders the home page.</li>
+        <li><strong>Signup Page:</strong> <code>/signup</code> - Renders the signup page and handles user registration.</li>
+        <li><strong>Login Page:</strong> <code>/login</code> - Renders the login page and handles user authentication.</li>
+        <li><strong>Bookshelf Page:</strong> <code>/bookshelf</code> - Displays books the user has progress on. Requires login.</li>
+        <li><strong>Library Page:</strong> <code>/library</code> - Displays all books and the user's reading progress. Requires login.</li>
+        <li><strong>Novels Page:</strong> <code>/novels</code> - Displays books categorized as novels. Requires login.</li>
+        <li><strong>Shastra Shiksha Page:</strong> <code>/shastra_shiksha</code> - Displays books categorized as Shastra Shiksha. Requires login.</li>
+        <li><strong>Kids Pathshala Page:</strong> <code>/kids_pathshala</code> - Displays books categorized as Kids Pathshala. Requires login.</li>
+        <li><strong>Profile Page:</strong> <code>/profile</code> - Renders the user profile page. Requires login.</li>
+        <li><strong>Settings Page:</strong> <code>/settings</code> - Renders the settings page. Requires login.</li>
+        <li><strong>Logout:</strong> <code>/logout</code> - Logs out the user and redirects to the home page. Requires login.</li>
+        <li><strong>Admin Page:</strong> <code>/admin</code> - Renders the admin page with a list of users. Requires admin access.</li>
+        <li><strong>Documentation Page:</strong> <code>/docs</code> - Renders the documentation page.</li>
+        <li><strong>Book Detail Page:</strong> <code>/book_details/&lt;int:book_id&gt;</code> - Displays details of a specific book. Requires login.</li>
+        <li><strong>Read Book Page:</strong> <code>/books/&lt;int:book_id&gt;</code> - Displays the book's embedded PDF and reading progress. Requires login.</li>
+        <li><strong>Upload Books Data:</strong> <code>/upload_books_data</code> - Allows admin users to upload books data via CSV or SQL files. Requires admin access.</li>
+        <li><strong>Save Progress API:</strong> <code>/api/progress</code> - Saves the user's reading progress for a book. Requires login.</li>
+        <li><strong>Get Progress API:</strong> <code>/api/progress/&lt;int:book_id&gt;</code> - Retrieves the user's reading progress for a specific book. Requires login.</li>
+        <li><strong>Current User Info:</strong> <code>/current_user</code> - Displays the current logged-in user's information. Requires login.</li>
+    </ul>
+    <h2 id="models">Models</h2>
+    <ul id="models-list">
+        <li><strong>User:</strong> Stores user details including username, email, password, and admin status.</li>
+        <li><strong>Book:</strong> Stores book details including title, author, description, PDF location, cover image location, published date, and genre.</li>
+        <li><strong>ReadingProgress:</strong> Stores reading progress for each user and book, including the last read page and progress percentage.</li>
+    </ul>
+    <h2 id="forms">Forms</h2>
+    <ul id="forms-list">
+        <li><strong>LoginForm:</strong> Form for user login with fields for username and password.</li>
+        <li><strong>SignupForm:</strong> Form for user signup with fields for username and password.</li>
+    </ul>
+    <h2 id="functions">Functions</h2>
+    <ul id="functions-list">
+        <li><strong>load_user(user_id):</strong> Loads a user by their ID.</li>
+        <li><strong>allowed_file(filename):</strong> Checks if the uploaded file has an allowed extension.</li>
+        <li><strong>index():</strong> Renders the home page.</li>
+        <li><strong>signup():</strong> Handles user signup and renders the signup page.</li>
+        <li><strong>login():</strong> Handles user login and renders the login page.</li>
+        <li><strong>bookshelf():</strong> Displays books the user has progress on. Requires login.</li>
+        <li><strong>library():</strong> Displays all books and the user's reading progress. Requires login.</li>
+        <li><strong>novels():</strong> Displays books categorized as novels. Requires login.</li>
+        <li><strong>shastra_shiksha():</strong> Displays books categorized as Shastra Shiksha. Requires login.</li>
+        <li><strong>kids_pathshala():</strong> Displays books categorized as Kids Pathshala. Requires login.</li>
+        <li><strong>profile():</strong> Renders the user profile page. Requires login.</li>
+        <li><strong>settings():</strong> Renders the settings page. Requires login.</li>
+        <li><strong>logout():</strong> Logs out the user and redirects to the home page. Requires login.</li>
+        <li><strong>admin():</strong> Renders the admin page with a list of users. Requires admin access.</li>
+        <li><strong>docs():</strong> Renders the documentation page.</li>
+        <li><strong>book_detail(book_id):</strong> Displays details of a specific book. Requires login.</li>
+        <li><strong>read_book(book_id):</strong> Displays the book's embedded PDF and reading progress. Requires login.</li>
+        <li><strong>upload_books_data():</strong> Handles uploading books data via CSV or SQL files. Requires admin access.</li>
+        <li><strong>save_progress():</strong> API endpoint to save the user's reading progress for a book. Requires login.</li>
+        <li><strong>get_progress(book_id):</strong> API endpoint to retrieve the user's reading progress for a specific book. Requires login.</li>
+        <li><strong>current_user_info():</strong> Displays the current logged-in user's information. Requires login.</li>
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel{% endblock %}
+{% block content %}
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #1e1e1e;
+        margin: 0;
+        padding: 0;
+        color: #f5f5f5;
+    }
+
+    .container {
+        width: 90%;
+        margin: auto auto auto auto;
+        padding: 20px;
+        background-color: #2c2c2c;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    h1 {
+        color: #4caf50;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    h2 {
+        color: #f5f5f5;
+        margin-bottom: 15px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #3a3a3a;
+    }
+
+    table th, table td {
+        border: 1px solid #555;
+        padding: 10px;
+        text-align: left;
+        color: #f5f5f5;
+    }
+
+    table th {
+        background-color: #4caf50;
+        color: white;
+    }
+
+    table tr:nth-child(even) {
+        background-color: #2e2e2e;
+    }
+
+    table tr:hover {
+        background-color: #444;
+    }
+
+    .upload-section {
+        margin-top: 30px;
+        padding: 15px;
+        background-color: #3a3a3a;
+        border: 1px solid #555;
+        border-radius: 8px;
+    }
+
+    .upload-section h3 {
+        margin-bottom: 10px;
+        color: #4caf50;
+    }
+
+    .upload-section form {
+        margin-bottom: 15px;
+    }
+
+    .upload-section label {
+        font-weight: bold;
+        color: #f5f5f5;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .upload-section input[type="file"] {
+        opacity: 0;
+        position: absolute;
+        z-index: -1;
+    }
+
+    .custom-file-label,
+    .upload-section button {
+        display: inline-block;
+        background-color: #4caf50;
+        color: #fff;
+        padding: 10px 15px;
+        border-radius: 5px;
+        cursor: pointer;
+        text-align: center;
+        border: none;
+        width: 120px;
+        text-transform: uppercase;
+        transition: background-color 0.3s ease;
+    }
+
+    .custom-file-label:hover,
+    .upload-section button:hover {
+        background-color: #388e3c;
+    }
+
+    .file-name {
+        margin-bottom: 10px;
+        font-size: 0.95em;
+        color: #f5f5f5;
+        background-color: #444;
+        padding: 8px 12px;
+        border-radius: 5px;
+        display: inline-block;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .button-group {
+        display: flex;
+        gap: 15px;
+        margin-top: 10px;
+    }
+</style>
+<div class="container">
+    <h1>Admin Panel</h1>
+    <h2>User Details</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Is Admin</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ 'Yes' if user.is_admin else 'No' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <h2>Upload Books Data</h2>
+    <div class="upload-section">
+        <h3>Upload Excel File</h3>
+        <form action="/upload_books_data" method="post" enctype="multipart/form-data">
+            <div id="excel-file-name" class="file-name"></div>
+            <div class="button-group">
+                <label for="excel-file" class="custom-file-label">Select File</label>
+                <input type="file" id="excel-file" name="file" accept=".csv" required onchange="updateFileName('excel-file', 'excel-file-name')">
+                <button type="submit">Upload File</button>
+            </div>
+        </form>
+        <h3>Upload SQL Script</h3>
+        <form action="/upload_books_data" method="post" enctype="multipart/form-data">
+            <div id="sql-file-name" class="file-name"></div>
+            <div class="button-group">
+                <label for="sql-file" class="custom-file-label">Select File</label>
+                <input type="file" id="sql-file" name="file" accept=".sql" required onchange="updateFileName('sql-file', 'sql-file-name')">
+                <button type="submit">Upload File</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function updateFileName(inputId, labelId) {
+        const input = document.getElementById(inputId);
+        const label = document.getElementById(labelId);
+        label.textContent = input.files.length > 0 ? input.files[0].name : '';
+    }
+</script>
+{% endblock %}
+</html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Current User Info{% endblock %}
+{% block content %}
+<style>
+    h1 {
+        color: #007bff;
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    p {
+        font-size: 1.2rem;
+        color: #6c757d;
+        margin-bottom: 10px;
+    }
+
+    iframe {
+        margin-top: 20px;
+        border: 2px solid #dee2e6;
+        border-radius: 8px;
+    }
+</style>
+<h1>Current User Information</h1>
+<p>Username: {{ user_info.username }}</p>
+<p>Email: {{ user_info.email }}</p>
+<p>Is Admin: {{ user_info.is_admin }}</p>
+<!-- Add iframe for fullscreen book display -->
+<iframe src="{{ book_url }}" style="width: 100%; height: 100vh; border: none;" allowfullscreen></iframe>
+{% endblock %}

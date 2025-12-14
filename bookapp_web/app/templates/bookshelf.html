@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<style>
+    #dashboard-books-container {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(200px, 1fr)); /* Dynamically adjust columns */
+        gap: 18px; /* Add spacing between books */
+        margin-top: 20px;
+    }
+
+    .book {
+        height: 300px; /* Set height */
+        width: 200px; /* Set width */
+        background-color: #f9f9f9;
+        opacity: 0.8; /* Set opacity */
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06); /* Add shadow effect */
+        position: relative;
+        margin: 0 auto;
+        display: block; /* Ensure the rectangle is visible */
+    }
+
+    .book:hover {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1); /* Enhance shadow on hover */
+    }
+
+    .book-title {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 10px;
+        text-align: center;
+    }
+
+    .book-author {
+        font-size: 14px;
+        color: #666;
+        margin-top: 5px;
+        text-align: center;
+    }
+</style>
+<h1>Bookshelf</h1>
+<div id="dashboard-body">
+    <div id="dashboard-books-container">
+        {% for book in books %}
+        <div class="book_div">
+            <a href="/book_details/{{ book.id }}" class="book" style="background-image: url('{{ book.cover_img_loc }}'); background-size: cover; background-position: center; position: relative;"></a> <!-- Ensure the rectangle is visible -->
+            <div class="book-title">{{ book.title }}</div>
+            <div class="book-author">{{ book.author }}</div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

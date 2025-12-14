@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>{% block title %}{% endblock %}</title>
+    <style>
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #FFF9F7;
+            margin: 0;
+            padding: 0;
+            font-size: 14px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .container {
+            margin-left: calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1)); /* Adjust margin dynamically */
+            width: calc(90% - calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1))); /* Adjust width dynamically */
+            padding: 20px;
+            padding-top: calc(var(--header-height, 40px) + 40px); /* Add padding to prevent overlap with header */
+            padding-bottom: calc(var(--footer-height, 40px) + 40px); /* Add padding to prevent overlap with footer */
+            background-color: #FFF9F7;
+            /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+            position: relative;
+            overflow-y: auto; /* Enable scrolling for the container */
+            height: calc(100% - var(--header-height, 40px) - var(--footer-height, 40px)); /* Adjust height dynamically */
+        }
+
+        h1,
+        h2 {
+            color: #333;
+        }
+
+        a {
+            color: #5cb85c;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .footer {
+            width: calc(100% - calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1))); /* Adjust width dynamically */
+            margin-left: calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1)); /* Adjust margin dynamically */
+            background-color: white;
+            color: #000;
+            padding: 10px 0;
+            text-align: center;
+            position: fixed; /* Fix footer at the bottom */
+            bottom: 0;
+            height: var(--footer-height, 40px); /* Use dynamic height */
+            box-shadow: 0 -4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .sidebar {
+            width: auto; /* Increase width to fit buttons */
+            height: 100vh; /* Extend to full vertical length */
+            position: fixed;
+            top: 0; /* Start from the top */
+            bottom: 0;
+            background-color: #ffffff;
+            color: #000000;
+            padding-top: 20px;
+            box-shadow: 2px 0 6px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+            z-index: 1000; /* Ensure sidebar is above other elements */
+        }
+
+        .sidebar .title {
+            font-family: 'Brush Script MT', cursive; /* Use cursive font style */
+            font-size: 22px;
+            font-weight: 400;
+            line-height: 40px;
+            letter-spacing: 0.5px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #000;
+        }
+
+        .nav-items button, .nav-items a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            background: transparent; /* Set background to transparent */
+            cursor: pointer;
+            color: #000000;
+            text-decoration: none;
+            z-index: 1001; /* Ensure clickable elements are above */
+            position: relative; /* Ensure proper stacking context */
+        }
+
+        .nav-items i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-items span {
+            margin-left: 10px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .profile-menu {
+            position: absolute;
+            bottom: 40px; /* Align to the very bottom */
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            display: flex;
+            flex-direction: column-reverse; /* Display items from bottom up */
+            padding-bottom: 10px; /* Add padding to ensure buttons are not sliced */
+        }
+
+        .profile-menu button, .profile-menu a {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            background: transparent; /* Set background to transparent */
+            cursor: pointer;
+            color: #000000;
+            text-decoration: none;
+        }
+
+        .profile-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .profile-menu span {
+            margin-left: 10px;
+            flex-grow: 1;
+            text-align: left;
+        }
+
+        .header {
+            width: calc(100% - calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1))); /* Adjust width dynamically */
+            margin-left: calc(var(--sidebar-width, 200px) * var(--sidebar-visible, 1)); /* Adjust margin dynamically */
+            display: flex;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed; /* Fix header at the top */
+            top: 0;
+            z-index: 1000;
+            height: var(--header-height, 40px); /* Use dynamic height */
+        }
+
+        .header .title {
+            display: none; /* Hide the title in the header */
+        }
+
+        .header .search-bar {
+            display: flex;
+            align-items: center;
+            width: 70%;
+        }
+
+        .header .search-bar input {
+            width: 70%;
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 20px; /* Rounded edges */
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header Section -->
+    <div class="header">
+        <div class="search-bar">
+            <input type="text" placeholder="Search the book you want to read..." id="search-input" onkeyup="searchBooks()">
+        </div>
+    </div>
+    <!-- Sidebar Section -->
+    {% if request.endpoint not in ['signup', 'login', 'index', 'admin','docs'] %}
+    <div class="sidebar">
+        <div class="title">Book Reader</div>
+        <div class="nav-items">
+            <a href="{{ url_for('bookshelf') }}">
+                <i class="fa-solid fa-book"></i>
+                <span class="hidden">Library</span>
+            </a>
+            <a href="{{ url_for('bookshelf') }}">
+                <i class="fa-solid fa-book-open"></i>
+                <span class="hidden">My Bookshelf</span>
+            </a>
+            <a href="{{ url_for('bookshelf') }}">
+                <i class="fa-solid fa-feather"></i>
+                <span class="hidden">Novels</span>
+            </a>
+        </div>
+        <div class="profile-menu">
+            <a href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span class="hidden">Logout</span>
+            </a>
+            <a href="{{ url_for('profile') }}">
+                <i class="fa-solid fa-id-card"></i>
+                <span class="hidden">Profile</span>
+            </a>
+            <a href="{{ url_for('settings') }}">
+                <i class="fa-solid fa-cog"></i>
+                <span class="hidden">Settings</span>
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    <!-- Main Content Section -->
+    <div class="container" id="main-container">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- Footer Section -->
+    <div class="footer">
+        <p>&copy; 2025 Book Reader App</p>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebar = document.querySelector('.sidebar');
+            const header = document.querySelector('.header');
+            const footer = document.querySelector('.footer');
+            const root = document.documentElement;
+
+            if (sidebar) {
+                const sidebarWidth = sidebar.offsetWidth + 'px';
+                root.style.setProperty('--sidebar-width', sidebarWidth); // Set sidebar width dynamically
+                const sidebarVisible = window.getComputedStyle(sidebar).display !== 'none' ? 1 : 0;
+                root.style.setProperty('--sidebar-visible', sidebarVisible); // Set sidebar visibility dynamically
+            } else {
+                root.style.setProperty('--sidebar-visible', 0); // No sidebar
+            }
+
+            if (header) {
+                const headerHeight = header.offsetHeight + 'px';
+                root.style.setProperty('--header-height', headerHeight); // Set header height dynamically
+            }
+
+            if (footer) {
+                const footerHeight = footer.offsetHeight + 'px';
+                root.style.setProperty('--footer-height', footerHeight); // Set footer height dynamically
+            }
+
+            // Dynamically update the title and h1 block
+            const endpointToTitle = {
+                'library': 'Library',
+                'bookshelf': 'My Bookshelf',
+                'novels': 'Novels',
+                'profile': 'Profile',
+                'settings': 'Settings',
+                'logout': 'Logout',
+                'signup': 'Sign Up',
+                'login': 'Login',
+                'docs': 'Documentation',
+                'book_detail': 'Information About the Book',
+                'index': 'Welcome to Book Reader App'
+            };
+
+            const endpoint = "{{ request.endpoint }}";
+            const pageTitle = endpointToTitle[endpoint] || '';
+            document.title = pageTitle;
+
+            const h1Element = document.querySelector('h1');
+            if (h1Element) {
+                h1Element.textContent = pageTitle;
+            }
+
+            // Search functionality
+            const searchInput = document.getElementById('search-input');
+            if (searchInput) {
+                searchInput.addEventListener('input', () => {
+                    const query = searchInput.value.toLowerCase();
+                    const books = document.querySelectorAll('.book_div');
+                    books.forEach(book => {
+                        const bookContainer = book.closest('div');
+                        if (book.textContent.toLowerCase().includes(query)) {
+                            bookContainer.style.display = 'block'; // Show matching books
+                        } else {
+                            bookContainer.style.display = 'none'; // Hide non-matching books
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

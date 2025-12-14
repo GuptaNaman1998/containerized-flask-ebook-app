@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+<style>
+    .container {
+        font-family: Arial, sans-serif;
+        max-width: auto;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff7f5; /* Updated background color */
+        border-radius: 8px;
+    }
+
+    h1 {
+        color: #ff6b6b; /* Updated heading color */
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    label {
+        font-weight: bold;
+        color: #333333; /* Updated label color */
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input, select, textarea, progress {
+        border: 1px solid #e0e0e0; /* Updated border color */
+        border-radius: 4px;
+        font-size: 1rem;
+        padding: 10px;
+        width: 100%;
+        box-sizing: border-box;
+        transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        background-color: #ffffff; /* Updated input background color */
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #ff6b6b; /* Updated focus border color */
+        outline: none;
+        box-shadow: 0 0 8px rgba(255, 107, 107, 0.5); /* Updated focus shadow */
+    }
+
+    input:hover, select:hover, textarea:hover {
+        border-color: #ff6b6b; /* Updated hover border color */
+    }
+
+    button {
+        background-color: #ff6b6b; /* Updated button background color */
+        color: white;
+        font-size: 1rem; /* Reduced font size */
+        font-weight: bold;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        align-self: center;
+        padding: 12px; /* Reduced padding */
+        width: auto; /* Adjusted width */
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    button:hover {
+        background-color: #e55a5a; /* Updated hover background color */
+        transform: scale(1.02);
+    }
+
+    .upload-btn {
+        display: inline-block;
+        margin-bottom: 20px;
+        background-color: #ff6b6b; /* Updated upload button color */
+        color: white;
+        padding: 10px 15px;
+        border-radius: 4px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .upload-btn:hover {
+        background-color: #e55a5a; /* Updated hover color */
+        transform: scale(1.05);
+    }
+
+    progress {
+        appearance: none;
+        -webkit-appearance: none;
+        height: 20px;
+    }
+
+    progress::-webkit-progress-bar {
+        background-color: #f0f0f0; /* Updated progress bar background */
+        border-radius: 10px;
+    }
+
+    progress::-webkit-progress-value {
+        background-color: #ff6b6b; /* Updated progress value color */
+        border-radius: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            padding: 15px;
+        }
+
+        button {
+            font-size: 0.9rem;
+        }
+
+        input, select, textarea {
+            font-size: 0.9rem;
+        }
+    }
+
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+    }
+
+    .form-section {
+        flex: 1;
+        min-width: 300px;
+    }
+
+    @media (max-width: 768px) {
+        .form-container {
+            flex-direction: column;
+        }
+    }
+</style>
+<div class="container">
+    <h1>User Profile</h1>
+    <form>
+        <div class="form-container">
+            <!-- Personal Information Section -->
+            <div class="form-section">
+                <h2>Personal Information</h2>
+                <div style="margin-bottom: 15px;">
+                    <label for="firstName">First Name:</label>
+                    <input type="text" id="firstName" name="firstName" value="{{ user.first_name }}">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="lastName">Last Name:</label>
+                    <input type="text" id="lastName" name="lastName" value="{{ user.last_name }}">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="dob">Date of Birth:</label>
+                    <input type="date" id="dob" name="dob" value="{{ user.dob }}">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="gender">Gender:</label>
+                    <select id="gender" name="gender">
+                        <option value="male" {% if user.gender=='male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if user.gender=='female' %}selected{% endif %}>Female</option>
+                        <option value="other" {% if user.gender=='other' %}selected{% endif %}>Other</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Contact Information Section -->
+            <div class="form-section">
+                <h2>Contact Information</h2>
+                <div style="margin-bottom: 15px;">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="phone">Phone:</label>
+                    <input type="tel" id="phone" name="phone" value="{{ user.phone }}">
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="country">Country:</label>
+                    <select id="country" name="country">
+                        <option value="India" {% if user.country=='India' %}selected{% endif %}>India</option>
+                        <option value="USA" {% if user.country=='USA' %}selected{% endif %}>USA</option>
+                        <option value="UK" {% if user.country=='UK' %}selected{% endif %}>UK</option>
+                        <!-- Add more countries as needed -->
+                    </select>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <label for="city">City:</label>
+                    <input type="text" id="city" name="city" value="{{ user.city }}">
+                </div>
+            </div>
+        </div>
+        <button type="submit">Save Changes</button>
+    </form>
+</div>
+{% endblock %}
